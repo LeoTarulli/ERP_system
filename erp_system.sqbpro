@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="erp_system.db" readonly="0" foreign_keys="0" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure query browser pragmas" current="0"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="4232"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><table title="Categories" custom_title="0" dock_id="1" table="4,10:mainCategories"/><dock_state state="000000ff00000000fd0000000100000002000005da00000387fc0100000001fb000000160064006f0063006b00420072006f00770073006500310100000000000005da0000012a00ffffff000002700000000000000004000000040000000800000008fc00000000"/><default_encoding codec=""/><browse_table_settings><table schema="main" name="Categories" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_" freeze_columns="0"><sort/><column_widths><column index="1" value="83"/><column index="2" value="87"/><column index="3" value="43"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="Orders" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_" freeze_columns="0"><sort/><column_widths><column index="1" value="71"/><column index="2" value="98"/><column index="3" value="135"/><column index="4" value="287"/><column index="5" value="72"/><column index="6" value="66"/><column index="7" value="59"/><column index="8" value="67"/><column index="9" value="67"/><column index="10" value="60"/><column index="11" value="40"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table></browse_table_settings></tab_browse><tab_sql><sql name="SQL 1*">
+Create view sales_frame as 
+with panel as (select 
+	o.OrderID ,
+	o.Date,
+	o.CustomerName,
+	od.Quantity,
+	od.PriceApplied,
+	case
+		when o.discount != 0 then &quot;Yes&quot;
+		else &quot;No&quot;
+	end as &quot;Discount Applied?&quot;,
+	od.PriceApplied * ((100 - o.discount)/100) * od.Quantity as &quot;TotalIncome&quot;,
+	od.CostApplied * od.Quantity as &quot;Totalcost&quot;,
+	case
+		when o.regular = 0 then &quot;Yes&quot;
+		else &quot;No&quot;
+	end as &quot;Regular?&quot;
+from orders o 
+inner join orderdetails od on od.orderID = o.orderID
+inner join Products p on p.ProductId = od.productID
+inner join categories c on c.CategoryID = o.Category
+right join contact co on co.RedID = o.Contacto
+left join regular r on r.ID = o.Regular
+left join Shops sh on sh.ID = o.Address
+)
+
+select 
+	*,
+	p.TotalIncome - p.TotalCost as &quot;Profit&quot;
+from panel p;
+
+
+drop view sales_frame;
+
+select * from sales_frame;
+
+
+
+
+
+
+
+
+
+
+
+</sql><sql name="SQL 2*">with panel as (select 
+	o.OrderID ,
+	o.Date,
+	o.CustomerName,
+	od.Quantity,
+	od.PriceApplied,
+	case
+		when o.discount != 0 then &quot;Yes&quot;
+		else &quot;No&quot;
+	end as &quot;Discount Applied?&quot;,
+	od.PriceApplied * ((100 - o.discount)/100) * od.Quantity as &quot;TotalIncome&quot;,
+	od.CostApplied * od.Quantity as &quot;Totalcost&quot;,
+	case
+		when o.regular = 0 then &quot;Yes&quot;
+		else &quot;No&quot;
+	end as &quot;Regular?&quot;
+from orders o 
+inner join orderdetails od on o.OrderID = od.OrderID
+inner join categories c on c.CategoryID = o.Category
+inner join products p on p.ProductId = od.ProductID
+right join contact co on co.RedID = o.Contacto
+right join regular r on r.ID = o.category
+right join Shops sh on sh.ID = o.Address
+)
+
+select 
+	*,
+	p.TotalIncome - p.TotalCost as &quot;Profit&quot;
+from panel p
+order by p.Date desc;</sql><sql name="SQL 3*">select * from products;
+</sql><current_tab id="2"/></tab_sql></sqlb_project>

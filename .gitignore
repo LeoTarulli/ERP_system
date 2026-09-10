@@ -1,1 +1,9 @@
 csv_files/
+.streamlit/secrets.toml
+.env
+__pycache__/
+*.pyc
+
+# Bases de datos SQLite locales y proyectos de base de datos
+*.db
+*.sqbpro

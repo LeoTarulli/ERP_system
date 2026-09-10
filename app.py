@@ -7,7 +7,6 @@ import seaborn as sns
 import plotly.express as px
 
 # Connect to the SQLite database
-#conn = st.connection("erp_db", type="sql", url="sqlite:///erp_system.db")
 conn = st.connection("supabase_db", type="sql")
 
 # Page config

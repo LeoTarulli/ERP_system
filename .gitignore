@@ -7,3 +7,4 @@ __pycache__/
 # Bases de datos SQLite locales y proyectos de base de datos
 *.db
 *.sqbpro
+new_tables.py
